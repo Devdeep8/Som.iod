@@ -1,28 +1,18 @@
-/**
- * v0 by Vercel.
- * @see https://v0.dev/t/FRMDtdbLaBE
- * Documentation: https://v0.dev/docs#integrating-generated-code-into-your-nextjs-app
- */
 "use client"
 
-import { JSX, SVGProps, useState } from "react"
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { signIn } from "next-auth/react"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/hooks/use-toast"
-export default function Component() {
-    const {toast} = useToast()
+
+export default function UserAuthForm() {
   const [isLoading, setIsLoading] = useState(false)
+  const { toast } = useToast()
+
   const handleGoogleSignIn = async () => {
     setIsLoading(true)
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
-      toast({
-        title: "Signed in with Google",
-        description: "You have successfully signed in with your Google account.",
-        variant: "default",
-      })
+      await signIn('google')
     } catch (error) {
       toast({
         title: "Sign-in failed",
@@ -33,29 +23,19 @@ export default function Component() {
       setIsLoading(false)
     }
   }
+
   return (
-    <Card className="mx-auto max-w-md">
-      <CardHeader>
-        <CardTitle>Sign in</CardTitle>
-        <CardDescription>Enter your email or sign in with Google.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form className="space-y-4">
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" placeholder="m@example.com" />
-          </div>
-          <Button onClick={handleGoogleSignIn} variant="outline" className="w-full" disabled={isLoading}>
-            {isLoading ? <div className="mr-2 h-4 w-4 animate-spin" /> : <ChromeIcon className="mr-2 h-4 w-4" />}
-            Sign in with Google
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
+    <div className="mt-4 flex justify-center items-center">
+      <Button onClick={handleGoogleSignIn} variant="outline" className="w-full" disabled={isLoading}>
+        {isLoading ? <div className="mr-2 h-4 w-4 animate-spin" /> : <ChromeIcon className="mr-2 h-4 w-4" />}
+        Sign in with Google
+      </Button>
+    </div>
   )
 }
 
-function ChromeIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
+
+export function ChromeIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import {Inter} from "next/font/google"
 import "./globals.css";
 import { Toaster } from '@/components/ui/toaster'
-import { cn } from "@/lib/utils";
 import Providers from "@/components/Providers";
 
 
@@ -18,11 +17,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  auth,
   children,
 }: Readonly<{
+  auth: React.ReactNode
   children: React.ReactNode;
-  authModal: React.ReactNode
-
+ 
 }>) {
   return (
     <html lang="en">
@@ -33,6 +33,7 @@ export default function RootLayout({
         <div className=" container mx-auto h-full">
 
         {children}
+        {auth}
         </div>
         </Providers>
         <Toaster />

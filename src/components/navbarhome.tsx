@@ -1,10 +1,12 @@
-"use client"
+
 import React from "react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { useRouter } from "next/navigation";
-const HomeNavbar = () => {
-  const router = useRouter();
+import { getAuthSession } from "@/lib/auth";
+
+const HomeNavbar = async() => {
+  const session = await getAuthSession()
+  console.log(session)
   return (
     <nav className="py-8  ">
       <div className="flex justify-between items-center">
@@ -21,7 +23,14 @@ const HomeNavbar = () => {
           </Link>
         </div>
         <div className="">
-        <Button onClick={() => router.push('/sign-in')}>Login</Button>
+          {
+            session?.user ? (<p>You are login</p>) : (
+              < Link  href={'/login'}><Button size='lg' variant='default'>
+                Login
+                </Button></Link>
+            )
+          }
+        
         </div>
       </div>
     </nav>
